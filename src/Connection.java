@@ -6,9 +6,7 @@ public class Connection extends Thread {
     private Socket socket;
     BufferedReader in;
     PrintWriter out;
-    String name = "";
     public Connection (Socket in_socket) {
-        name = "<username>";
         socket = in_socket;
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -16,6 +14,7 @@ public class Connection extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        ConnectionDB.getInstance().addConnection(this);
     }
     @Override
     public void run () {

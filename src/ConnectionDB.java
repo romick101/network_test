@@ -3,8 +3,8 @@ import java.util.List;
 
 
 public class ConnectionDB {
-    private static ConnectionDB _instance;
     private ConnectionDB () {}
+    private static ConnectionDB _instance;
     public static ConnectionDB getInstance () {
         if (_instance == null) {
             _instance = new ConnectionDB();

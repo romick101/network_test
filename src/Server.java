@@ -16,16 +16,12 @@ public class Server
         ConnectionDB DB = ConnectionDB.getInstance();
         while (true) {
             System.out.println("Waiting for connections");
-            //Socket client = server.accept();
             Connection con = new Connection(server.accept());
-            DB.addConnection(con);
-         //   con.setDaemon(true);
             con.start();
             System.out.println("Got a client");
         }
     }
     public static void main (String [] args) {
-
         try {
             Server server = new Server();
         } catch (IOException e) {
