@@ -3,7 +3,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class Client {
-    protected String name = "<username>";
+    public String name = "<username>";
     int serverPort = 4444;
     String address = "127.0.0.1";
 
@@ -14,7 +14,7 @@ public class Client {
     public Client () {
         try {
             _socket = new Socket(address, serverPort);
-            _writer = new Writer(new OutputStreamWriter(_socket.getOutputStream()));
+            _writer = new Writer(new OutputStreamWriter(_socket.getOutputStream()), this);
             _writer.start();
             _listener = new Listener(new InputStreamReader(_socket.getInputStream()));
             _listener.start();
