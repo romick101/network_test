@@ -6,6 +6,8 @@ public class Connection extends Thread {
     private Socket socket;
     BufferedReader in;
     PrintWriter out;
+    String clientName;
+
     public Connection (Socket in_socket) {
         socket = in_socket;
         try {
@@ -19,6 +21,7 @@ public class Connection extends Thread {
     @Override
     public void run () {
         try {
+            clientName = in.readLine();
             ConnectionDB DB = ConnectionDB.getInstance();
             while (true) {
                     String line = in.readLine();

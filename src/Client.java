@@ -7,6 +7,7 @@ public class Client {
     int serverPort = 4444;
     String address = "127.0.0.1";
 
+    public Connection connection;
     Writer _writer;
     Listener _listener;
     Socket _socket;
@@ -18,8 +19,6 @@ public class Client {
             _writer.start();
             _listener = new Listener(new InputStreamReader(_socket.getInputStream()));
             _listener.start();
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }

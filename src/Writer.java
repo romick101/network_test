@@ -17,6 +17,8 @@ public class Writer extends Thread {
 
             System.out.print("Choose a nickname:");
             _holder.name = keyboard.readLine();
+            out.println(_holder.name);
+            out.flush();
             while (true) {
                 toServer.append(_holder.name);
                 toServer.append(": ");
