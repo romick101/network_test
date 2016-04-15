@@ -3,12 +3,11 @@ package Server;
 import Client.Client;
 import MessageProtocol.BaseUserProtocol;
 import MessageProtocol.IProtocol;
+import MessageProtocol.ProtocolHandler;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Connection extends Thread {
     private Socket socket;
@@ -34,17 +33,20 @@ public class Connection extends Thread {
     public void run () {
         try {
             while (true) {
-                    String line = in.readLine();
-                    System.out.println("Got " + line);
-                    switch (protocol.HandleMsg(line)) {
-                        case "AUTH: ":
-                            Pattern p = Pattern.compile("AUTH: (.+?)");
-                            Matcher m = p.matcher(line);
-                            setClientName(m.group());
-                            break;
-                        default:
-                            sendMsgToAll(line);
-                    }
+                String line = in.readLine();
+                System.out.println("Got " + line);
+                ProtocolHandler handler = new ProtocolHandler();
+                handler.setProtocol(protocol,this);
+                handler.Handle(protocol, line);
+//                switch (protocol.HandleMsg(line)) {
+//                    case "AUTH: ":
+//                        Pattern p = Pattern.compile("AUTH: (.+?)");
+//                        Matcher m = p.matcher(line);
+//                        setClientName(m.group());
+//                        break;
+//                    default:
+//                        sendMsgToAll(line);
+//                }
                 }
         } catch (SocketException s) {
             System.out.println("Client dropped");
@@ -64,5 +66,8 @@ public class Connection extends Thread {
     }
     public void sendMsgToAll (String msg) {
         DB.sendToAll(msg);
+    }
+    public void dropClient ()  {
+        System.out.println("DO CLIENT DROPPING");
     }
 }
