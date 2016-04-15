@@ -1,3 +1,5 @@
+package Server;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,14 +13,14 @@ public class ConnectionDB {
         return _instance;
     }
 
-//    private List<Client> connections = new ArrayList<>();
+//    private List<Client.Client> connections = new ArrayList<>();
 //
 //
-//    public synchronized void addConnection (Client in) {
+//    public synchronized void addConnection (Client.Client in) {
 //        connections.add(in);
 //    }
 //    public synchronized void sendToAll (String line) {
-//        for (Client key: connections) {
+//        for (Client.Client key: connections) {
 //                key.connection.out.println(line);
 //                key.connection.out.flush();
 //        }

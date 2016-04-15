@@ -1,9 +1,13 @@
+package Client;
+
+import Server.Connection;
+
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class Client {
-    public String name = "<username>";
+    public String name = null;
     int serverPort = 4444;
     String address = "127.0.0.1";
 

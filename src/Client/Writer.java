@@ -1,4 +1,9 @@
-import java.io.*;
+package Client;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
 public class Writer extends Thread {
     Client _holder;
@@ -13,13 +18,13 @@ public class Writer extends Thread {
         try {
             PrintWriter out = new PrintWriter(_out);
             BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
-            StringBuilder toServer = new StringBuilder();
-
-            System.out.print("Choose a nickname:");
-            _holder.name = keyboard.readLine();
-            out.println(_holder.name);
-            out.flush();
+            if(_holder.name == null) {
+                System.out.print("Choose a nickname:");
+                out.println("AUTH:" + (_holder.name = keyboard.readLine()));
+                out.flush();
+            }
             while (true) {
+                StringBuilder toServer = new StringBuilder();
                 toServer.append(_holder.name);
                 toServer.append(": ");
                 toServer.append( keyboard.readLine());
