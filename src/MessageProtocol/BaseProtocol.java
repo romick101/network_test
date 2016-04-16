@@ -1,6 +1,6 @@
 package MessageProtocol;
 
-public class BaseUserProtocol extends IProtocol {
+public class BaseProtocol extends IProtocol {
     @Override
     public String HandleMsg (String msg) {
         char identifier = msg.charAt(0);

@@ -2,8 +2,9 @@ package MessageProtocol;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
-public class CommandProtocol extends IProtocol{
+public class ExtendedProtocol extends IProtocol{
     Calendar cal = Calendar.getInstance();
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
@@ -11,15 +12,18 @@ public class CommandProtocol extends IProtocol{
     public String HandleMsg (String msg) {
         char identifier = msg.charAt(0);
         String data = msg.substring(1,msg.length());
+        char command_identifier = data.charAt(0);
+        String command = data.substring(1,data.length());
         switch (identifier) {
             case '$':
                 executor.setClientName(data);
                 break;
             case '!':
+                if(command_identifier == '/') {
+                    HandleCommand(command);
+                    break;
+                }
                 executor.sendMsgToAll(data);
-                break;
-            case '/':
-                HandleCommand(data);
                 break;
             default:
                 executor.sendMsgToOne("No identifier in command protocol");
@@ -29,13 +33,14 @@ public class CommandProtocol extends IProtocol{
     private void HandleCommand (String command) {
         switch (command) {
             case "now":
-                executor.sendMsgToOne(new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance()));
+                executor.sendMsgToOne(sdf.format(new Date()));
                 break;
             case "rul":
                 executor.sendMsgToOne(rules);
                 break;
             default:
                 executor.sendMsgToOne("No command to handle");
+                break;
         }
     }
     final String rules = "No flood, caps or abusive behaviour allowed. Feel free :)";

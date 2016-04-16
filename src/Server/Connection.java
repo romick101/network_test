@@ -51,16 +51,16 @@ public class Connection extends Thread {
     public void setClientProtocol (String pname) {
         switch (pname) {
             case "base":
-                protocol = new BaseUserProtocol();
+                protocol = new BaseProtocol();
                 handler.setProtocol(protocol, this);
                 break;
             case "extended":
-                protocol = new CommandProtocol();
+                protocol = new ExtendedProtocol();
                 handler.setProtocol(protocol, this);
                 break;
             default:
                 sendMsgToOne("No protocol chosen, set base by default");
-                protocol = new BaseUserProtocol();
+                protocol = new BaseProtocol();
                 handler.setProtocol(protocol, this);
         }
     }
