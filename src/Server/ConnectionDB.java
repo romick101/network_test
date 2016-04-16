@@ -30,6 +30,10 @@ public class ConnectionDB {
     public synchronized void addConnection (Connection in) {
         connections.add(in);
     }
+    public synchronized void sendToOne (Connection target, String line) {
+        target.out.println(line);
+        target.out.flush();
+    }
     public synchronized void sendToAll (String line) {
         for (Connection key: connections) {
                 key.out.println(line);

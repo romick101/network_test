@@ -18,21 +18,22 @@ public class Writer extends Thread {
         try {
             PrintWriter out = new PrintWriter(_out);
             BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
+            if(_holder.protocol == null) {
+                System.out.println("Choose a protocol: ");
+                out.println("@" + (keyboard.readLine()));
+                out.flush();
+            }
             if(_holder.name == null) {
-                System.out.print("Choose a nickname:");
-                out.println("AUTH:" + (_holder.name = keyboard.readLine()));
+                System.out.println("Choose a nickname: ");
+                out.println("$" + (_holder.name = keyboard.readLine()));
                 out.flush();
             }
             while (true) {
                 StringBuilder toServer = new StringBuilder();
-                toServer.append(_holder.name);
-                toServer.append(": ");
-                toServer.append( keyboard.readLine());
+                toServer.append("!");
+                toServer.append(keyboard.readLine());
                 out.println(toServer.toString());
                 out.flush();
-                if(toServer.toString().contains("STOP")) {
-                    break;
-                }
                 toServer.delete(0,toServer.length());
             }
         } catch (Exception e) {

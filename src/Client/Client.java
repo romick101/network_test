@@ -1,6 +1,6 @@
 package Client;
 
-import Server.Connection;
+import MessageProtocol.IProtocol;
 
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -8,10 +8,9 @@ import java.net.Socket;
 
 public class Client {
     public String name = null;
+    public IProtocol protocol = null;
     int serverPort = 4444;
     String address = "127.0.0.1";
-
-    public Connection connection;
     Writer _writer;
     Listener _listener;
     Socket _socket;

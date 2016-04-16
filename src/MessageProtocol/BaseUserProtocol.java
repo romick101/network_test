@@ -3,24 +3,19 @@ package MessageProtocol;
 public class BaseUserProtocol extends IProtocol {
     @Override
     public String HandleMsg (String msg) {
-        String identifier = msg.substring(0,5);
-
+        char identifier = msg.charAt(0);
+        String data = msg.substring(1, msg.length());
         switch (identifier) {
-            case "AUTH":
-                executor.setClientName(msg.substring(5, msg.length()));
+            case '$':
+                executor.setClientName(data);
                 break;
-            case "MSSG":
-                executor.sendMsgToAll(msg);
-                break;
-            case "EXIT":
-                executor.dropClient();
+            case '!':
+                executor.sendMsgToAll(data);
                 break;
             default:
-                executor.sendMsgToAll(msg);
+                executor.sendMsgToOne("No identifier in base protocol");
                 break;
-
         }
-
-        return "Action performed";
+        return "Handled by base";
     }
 }
