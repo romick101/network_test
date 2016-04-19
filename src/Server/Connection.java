@@ -8,8 +8,8 @@ import java.net.SocketException;
 
 public class Connection extends Thread {
     private Socket socket;
-    BufferedReader in;
-    PrintWriter out;
+    ObjectInputStream in;
+    ObjectOutputStream out;
     String _name;
     ConnectionDB DB = ConnectionDB.getInstance();
     ProtocolHandler handler = new ProtocolHandler();
@@ -20,8 +20,8 @@ public class Connection extends Thread {
         socket = in_socket;
         setClientProtocol(new DefaultProtocol());
         try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+            in = new ObjectInputStream(socket.getInputStream());
+            out = new ObjectOutputStream(socket.getOutputStream());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -31,13 +31,14 @@ public class Connection extends Thread {
     public void run () {
         try {
             while (true) {
-                String line = in.readLine();
+
+                String line = in.readObject().toString();
                 System.out.println("Got " + line + " from " + _name);
                 handler.Handle(protocol, line);
             }
         } catch (SocketException s) {
             System.out.println("Client dropped");
-        } catch (IOException e) {
+        } catch (IOException|ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
             try {

@@ -8,10 +8,10 @@ import javafx.scene.text.FontWeight;
 
 public class UsernameStrategy implements IMsgStrategy {
     @Override
-    public Label createLabel () {
+    public Label createLabel (String content) {
         Label label = new Label();
-        label.setText("</username>");
-        label.setPrefWidth(95);
+        label.setText(content);
+        label.setPrefWidth(content.length()*10);
         label.setPrefHeight(30);
         label.setAlignment(Pos.CENTER_LEFT);
         label.setTextFill(Color.RED);

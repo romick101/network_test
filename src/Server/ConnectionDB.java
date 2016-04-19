@@ -31,13 +31,19 @@ public class ConnectionDB {
         connections.add(in);
     }
     public synchronized void sendToOne (Connection target, String line) {
-        target.out.println(line);
-        target.out.flush();
+        try {
+            target.out.writeObject(line);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public synchronized void sendToAll (String line) {
-        for (Connection key: connections) {
-                key.out.println(line);
-                key.out.flush();
+        try {
+            for (Connection key : connections) {
+                key.out.writeObject(line);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

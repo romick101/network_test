@@ -6,24 +6,23 @@ import javafx.scene.layout.HBox;
 
 public class Controller {
     private IMsgStrategy _msgStrategy;
-
     public Scene createScene(){
-        return new Scene(buildMsg(), 320, 240);
+        return new Scene(buildMsg("Name", "Time", "Content"), 320, 240);
     }
-    public void setStrategy (IMsgStrategy in) {
+    private void setStrategy (IMsgStrategy in) {
         _msgStrategy = in;
     }
-    public  Label createLabel(){
-        return _msgStrategy.createLabel();
+    private Label createLabel(String content){
+        return _msgStrategy.createLabel(content);
     }
-    public HBox buildMsg () {
+    public HBox buildMsg (String usr, String time,String msg) {
         setStrategy(new UsernameStrategy());
         HBox root = new HBox();
-        root.getChildren().add(createLabel());
+        root.getChildren().add(createLabel(usr));
         setStrategy(new TimeStrategy());
-        root.getChildren().add(createLabel());
+        root.getChildren().add(createLabel(time));
         setStrategy(new MessageStrategy());
-        root.getChildren().add(createLabel());
+        root.getChildren().add(createLabel(msg));
         return root;
     }
 }

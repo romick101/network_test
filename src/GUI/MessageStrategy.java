@@ -8,11 +8,11 @@ import javafx.scene.text.Font;
 
 public class MessageStrategy implements IMsgStrategy {
     @Override
-    public Label createLabel () {
+    public Label createLabel (String content) {
         Label label = new Label();
-        label.setText("<message>");
-        label.setPrefWidth(80);
-        label.setPrefHeight(30);
+        label.setText(content);
+        label.setPrefWidth(content.length()*10);
+        label.setPrefHeight(25);
         label.setAlignment(Pos.CENTER_LEFT);
         label.setTextFill(Color.BLACK);
         label.setFont(Font.font("Helvetica", 13));

@@ -2,11 +2,9 @@ package Client;
 
 import MessageProtocol.IProtocol;
 
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-public class Client {
+public class Client  {
     public String name = null;
     public IProtocol protocol = null;
     int serverPort = 4444;
@@ -15,12 +13,27 @@ public class Client {
     Listener _listener;
     Socket _socket;
 
+//    private TextArea messages = new TextArea();
+//
+//    private Parent CreateContent () {
+//        messages.setPrefHeight(550);
+//        TextField input = new TextField();
+//        VBox root = new VBox(20, messages, input);
+//        root.setPrefSize(600,600);
+//        return root;
+//    }
+//    @Override
+//    public void start (Stage primaryStage) {
+//        primaryStage.setScene(new Scene(CreateContent()));
+//        primaryStage.show();
+//    }
+
     public Client () {
         try {
             _socket = new Socket(address, serverPort);
-            _writer = new Writer(new OutputStreamWriter(_socket.getOutputStream()), this);
+            _writer = new Writer(_socket.getOutputStream(), this);
             _writer.start();
-            _listener = new Listener(new InputStreamReader(_socket.getInputStream()));
+            _listener = new Listener(_socket.getInputStream());
             _listener.start();
         } catch (Exception e) {
             e.printStackTrace();

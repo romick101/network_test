@@ -1,22 +1,19 @@
 package Client;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 
 public class Listener extends Thread {
-    InputStreamReader _in;
-    public Listener (InputStreamReader in) {
+    InputStream _in;
+    public Listener (InputStream in) {
         this._in = in;
     }
     @Override
     public void run () {
         try {
-            BufferedReader in = new BufferedReader(_in);
-            StringBuilder fromServer = new StringBuilder();
+            ObjectInputStream in = new ObjectInputStream(_in);
             while (true) {
-                fromServer.append(in.readLine());
-                System.out.println(fromServer);
-                fromServer.delete(0,fromServer.length());
+                System.out.println(in.readObject().toString());
             }
         }catch (Exception e) {
             e.printStackTrace();
