@@ -30,20 +30,24 @@ public class ConnectionDB {
     public synchronized void addConnection (Connection in) {
         connections.add(in);
     }
-    public synchronized void sendToOne (Connection target, String line) {
+    public synchronized void rmConnection (Connection in) {
+        connections.remove(in);
+    }
+    public void sendToOne (Connection target, String line) {
         try {
             target.out.writeObject(line);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public synchronized void sendToAll (String line) {
-        try {
+    public void sendToAll (String line) {
             for (Connection key : connections) {
-                key.out.writeObject(line);
+                try {
+                    key.out.writeObject(line);
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 }

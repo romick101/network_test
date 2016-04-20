@@ -31,12 +31,12 @@ public class Connection extends Thread {
     public void run () {
         try {
             while (true) {
-
                 String line = in.readObject().toString();
                 System.out.println("Got " + line + " from " + _name);
                 handler.Handle(protocol, line);
             }
-        } catch (SocketException s) {
+        } catch (SocketException|EOFException s) {
+            DB.rmConnection(this);
             System.out.println("Client dropped");
         } catch (IOException|ClassNotFoundException e) {
             e.printStackTrace();
@@ -54,13 +54,15 @@ public class Connection extends Thread {
             case "base":
                 protocol = new BaseProtocol();
                 handler.setProtocol(protocol, this);
+                sendMsgToOne("Set base protocol OK.\n" + "Choose name.");
                 break;
             case "extended":
                 protocol = new ExtendedProtocol();
                 handler.setProtocol(protocol, this);
+                sendMsgToOne("Set extended protocol OK.\n" + "Choose name.");
                 break;
             default:
-                sendMsgToOne("No protocol chosen, set base by default");
+                sendMsgToOne("No protocol chosen, set base by default.\n" + "Choose name.");
                 protocol = new BaseProtocol();
                 handler.setProtocol(protocol, this);
         }
@@ -71,14 +73,12 @@ public class Connection extends Thread {
     }
     public void setClientName (String name) {
         this._name = name;
+        sendMsgToOne("You`ve chosen <" + name + "> nickname.\n" + "Welcome to our chat!");
     }
     public void sendMsgToOne (String msg) {
         DB.sendToOne(this, msg);
     }
     public void sendMsgToAll (String msg) {
         DB.sendToAll(_name + ": " + msg);
-    }
-    public void dropClient ()  {
-        System.out.println("DO CLIENT DROPPING");
     }
 }

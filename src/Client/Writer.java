@@ -1,35 +1,57 @@
 package Client;
 
-import java.io.*;
+import MessageProtocol.BaseProtocol;
+import MessageProtocol.ExtendedProtocol;
+
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
 
 public class Writer extends Thread {
     Client _holder;
 
     OutputStream _out;
+    ObjectOutputStream out;
     public Writer (OutputStream out, Client client) {
         this._holder = client;
         this._out = out;
+        try {
+            this.out = new ObjectOutputStream(_out);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.setDaemon(true);
     }
+
     @Override
     public void run () {
+    }
+    public void writeMsg (Serializable data) {
         try {
-            ObjectOutputStream out = new ObjectOutputStream(_out);
-            BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
             if(_holder.protocol == null) {
-                System.out.println("Choose a protocol: ");
-                out.writeObject("@" + (keyboard.readLine()));
+                switch (data.toString()) {
+                    case "base":
+                        _holder.protocol = new BaseProtocol();
+                        break;
+                    case "extended":
+                        _holder.protocol = new ExtendedProtocol();
+                        break;
+                    default:
+                        _holder.protocol = new BaseProtocol();
+                }
+                out.writeObject("@" + data.toString());
+                return;
             }
             if(_holder.name == null) {
-                System.out.println("Choose a nickname: ");
-                out.writeObject("$" + (_holder.name = keyboard.readLine()));
+                _holder.name = data.toString();
+                out.writeObject("$" + (_holder.name = data.toString()));
+                return;
             }
-            while (true) {
                 StringBuilder toServer = new StringBuilder();
                 toServer.append("!");
-                toServer.append(keyboard.readLine());
+                toServer.append(data.toString());
                 out.writeObject(toServer.toString());
                 toServer.delete(0,toServer.length());
-            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
