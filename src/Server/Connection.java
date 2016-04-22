@@ -54,15 +54,15 @@ public class Connection extends Thread {
             case "base":
                 protocol = new BaseProtocol();
                 handler.setProtocol(protocol, this);
-                sendMsgToOne("Set base protocol OK.\n" + "Choose name.");
+                sendMsgToOne("Set base protocol OK.\n" + "Choose name (10 characters max).");
                 break;
             case "extended":
                 protocol = new ExtendedProtocol();
                 handler.setProtocol(protocol, this);
-                sendMsgToOne("Set extended protocol OK.\n" + "Choose name.");
+                sendMsgToOne("Set extended protocol OK.\n" + "Choose name (10 characters max).");
                 break;
             default:
-                sendMsgToOne("No protocol chosen, set base by default.\n" + "Choose name.");
+                sendMsgToOne("No protocol chosen, set base by default.\n" + "Choose name (10 characters max).");
                 protocol = new BaseProtocol();
                 handler.setProtocol(protocol, this);
         }
@@ -72,8 +72,16 @@ public class Connection extends Thread {
         handler.setProtocol(protocol, this);
     }
     public void setClientName (String name) {
-        this._name = name;
-        sendMsgToOne("You`ve chosen <" + name + "> nickname.\n" + "Welcome to our chat!");
+        this._name = CheckName(name);
+        sendMsgToOne("You`ve chosen <" + _name + "> nickname.\n" + "Welcome to our chat!");
+    }
+    private String CheckName (String name) {
+        String res = name;
+        if(name.length() == 0)
+            res = "default";
+        if (name.length() > 10)
+            res = name.substring(0,10);
+        return res;
     }
     public void sendMsgToOne (String msg) {
         DB.sendToOne(this, msg);

@@ -12,8 +12,12 @@ public class ExtendedProtocol extends IProtocol{
     public String HandleMsg (String msg) {
         char identifier = msg.charAt(0);
         String data = msg.substring(1,msg.length());
-        char command_identifier = data.charAt(0);
-        String command = data.substring(1,data.length());
+        char command_identifier = '_';
+        String command = "no command";
+        if(!data.isEmpty()) {
+            command_identifier = data.charAt(0);
+            command = data.substring(1, data.length());
+        }
         switch (identifier) {
             case '$':
                 executor.setClientName(data);
