@@ -5,9 +5,11 @@ import GUI.MessageBox;
 import MessageProtocol.IProtocol;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -52,13 +54,20 @@ private Parent CreateContent () {
         _writer.writeMsg(input.getText());
         input.clear();
     });
-    VBox root = new VBox(20, messages.getMessages(), input);
-    root.setPrefSize(300,600);
+
+    BorderPane bp = new BorderPane();
+    bp.setPadding(new Insets(0,0,0,0));
+    VBox root = new VBox();
+    root.setPrefSize(250,525);
+    root.getChildren().add(bp);
+    root.getChildren().add(messages.getRoot());
+    root.getChildren().add(input);
     return root;
 }
     @Override
     public void start (Stage primaryStage) {
         primaryStage.setScene(new Scene(CreateContent()));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
     @Override
@@ -85,14 +94,14 @@ private Parent CreateContent () {
     }
 
     private Message parceMsg(String rawData) {
-        if (rawData.contains(":")) {
-            String[] parts = rawData.split(":");
+        if (rawData.contains(this.name + ":")) {
+            String[] parts = rawData.split(this.name + ":");
             String name = parts[0]; // 004
             String data = parts[1];
-            return new Message(name, data);
+            return new Message(this.name + ":", data);
         } else
         {
-            return new Message("System", rawData);
+            return new Message("System: ", rawData);
         }
     }
     public static void main (String [] args) {

@@ -9,7 +9,7 @@ public class Message {
     private Text data;
     private HBox message;
 
-    final double _NAMESIZE = 75;
+    final double _NAMESIZE = 65;
     final double _DATASIZE = 250;
 
     public Text getUsername() {
@@ -34,6 +34,7 @@ public class Message {
 
     public Message(String username, String data) {
         message = new HBox();
+        message.setPrefSize(250, 20);
         this.username = new Text();
         this.data = new Text();
         this.username.setFill(Color.CRIMSON);
