@@ -58,7 +58,7 @@ private Parent CreateContent () {
     BorderPane bp = new BorderPane();
     bp.setPadding(new Insets(0,0,0,0));
     VBox root = new VBox();
-    root.setPrefSize(250,525);
+    root.setPrefSize(315,525);
     root.getChildren().add(bp);
     root.getChildren().add(messages.getRoot());
     root.getChildren().add(input);
