@@ -12,20 +12,6 @@ public class ConnectionDB {
         }
         return _instance;
     }
-
-//    private List<Client.Client> connections = new ArrayList<>();
-//
-//
-//    public synchronized void addConnection (Client.Client in) {
-//        connections.add(in);
-//    }
-//    public synchronized void sendToAll (String line) {
-//        for (Client.Client key: connections) {
-//                key.connection.out.println(line);
-//                key.connection.out.flush();
-//        }
-//    }
-
     private List<Connection> connections = new ArrayList<>();
     public synchronized void addConnection (Connection in) {
         connections.add(in);
@@ -33,21 +19,21 @@ public class ConnectionDB {
     public synchronized void rmConnection (Connection in) {
         connections.remove(in);
     }
-    public void sendToOne (Connection target, String line) {
+
+    public void sendToOne (Connection target, Response response) {
         try {
-            target.out.writeObject(line);
+            target.out.writeObject(response);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void sendToAll (String line) {
+    public void sendToAll (Response response) {
             for (Connection key : connections) {
                 try {
-                    key.out.writeObject(line);
+                    key.out.writeObject(response);
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
     }
 }

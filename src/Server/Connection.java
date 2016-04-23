@@ -84,9 +84,9 @@ public class Connection extends Thread {
         return res;
     }
     public void sendMsgToOne (String msg) {
-        DB.sendToOne(this, msg);
+        DB.sendToOne(this, new Response("System", msg));
     }
     public void sendMsgToAll (String msg) {
-        DB.sendToAll(_name + ": " + msg);
+        DB.sendToAll(new Response(_name, msg));
     }
 }
