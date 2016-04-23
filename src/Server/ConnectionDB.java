@@ -3,7 +3,7 @@ package Server;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConnectionDB {
+public class ConnectionDB implements IObservable {
     private ConnectionDB () {}
     private static ConnectionDB _instance;
     public static ConnectionDB getInstance () {
@@ -12,25 +12,29 @@ public class ConnectionDB {
         }
         return _instance;
     }
-    private List<Connection> connections = new ArrayList<>();
-    public synchronized void addConnection (Connection in) {
+    private List<IObserver> connections = new ArrayList<>();
+
+    @Override
+    public synchronized void addObserver (IObserver in) {
         connections.add(in);
     }
-    public synchronized void rmConnection (Connection in) {
+    @Override
+    public synchronized void deleteObserver (IObserver in) {
         connections.remove(in);
     }
-
-    public void sendToOne (Connection target, Response response) {
+    @Override
+    public void sendToOne (IObserver target, Response response) {
         try {
-            target.out.writeObject(response);
+            target.sendMessage(response);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    @Override
     public void sendToAll (Response response) {
-            for (Connection key : connections) {
+            for (IObserver key : connections) {
                 try {
-                    key.out.writeObject(response);
+                    key.sendMessage(response);
                 }catch (Exception e) {
                     e.printStackTrace();
                 }

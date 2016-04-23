@@ -6,7 +6,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class Connection extends Thread {
+public class Connection extends Thread implements IObserver{
     private Socket socket;
     ObjectInputStream in;
     ObjectOutputStream out;
@@ -25,7 +25,7 @@ public class Connection extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ConnectionDB.getInstance().addConnection(this);
+        ConnectionDB.getInstance().addObserver(this);
     }
     @Override
     public void run () {
@@ -36,7 +36,7 @@ public class Connection extends Thread {
                 handler.Handle(protocol, line);
             }
         } catch (SocketException|EOFException s) {
-            DB.rmConnection(this);
+            DB.deleteObserver(this);
             System.out.println("Client dropped");
         } catch (IOException|ClassNotFoundException e) {
             e.printStackTrace();
@@ -48,7 +48,6 @@ public class Connection extends Thread {
             }
         }
     }
-
     public void setClientProtocol (String pname) {
         switch (pname) {
             case "base":
@@ -82,6 +81,14 @@ public class Connection extends Thread {
         if (name.length() > 10)
             res = name.substring(0,10);
         return res;
+    }
+    @Override
+    public void sendMessage (Response response) {
+        try {
+            this.out.writeObject(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public void sendMsgToOne (String msg) {
         DB.sendToOne(this, new Response("System", msg));
