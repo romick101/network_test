@@ -1,7 +1,7 @@
 package Client;
 
 import MessageProtocol.BaseProtocol;
-import MessageProtocol.ExtendedProtocol;
+import MessageProtocol.CommandProtocol;
 
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -34,7 +34,7 @@ public class Writer extends Thread {
                         _holder.protocol = new BaseProtocol();
                         break;
                     case "extended":
-                        _holder.protocol = new ExtendedProtocol();
+                        _holder.protocol = new CommandProtocol(new BaseProtocol());
                         break;
                     default:
                         _holder.protocol = new BaseProtocol();

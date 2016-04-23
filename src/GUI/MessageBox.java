@@ -19,7 +19,7 @@ public class MessageBox {
     }
     public MessageBox() {
         Messages = new VBox();
-        Messages.setPrefSize(315,500);
+        Messages.setPrefSize(300,500);
         Messages.setStyle("-fx-background-color: black;");
 
 

@@ -3,9 +3,13 @@ package MessageProtocol;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ExtendedProtocol extends IProtocol{
+public class CommandProtocol extends DecoratorProtocol {
+
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
+    public CommandProtocol (IProtocol in) {
+        super(in);
+    }
     @Override
     public void HandleMsg (String msg) {
         char identifier = msg.charAt(0);
@@ -16,20 +20,13 @@ public class ExtendedProtocol extends IProtocol{
             command_identifier = data.charAt(0);
             command = data.substring(1, data.length());
         }
-        switch (identifier) {
-            case '$':
-                executor.setClientName(data);
-                break;
-            case '!':
-                if(command_identifier == '/') {
-                    HandleCommand(command);
-                    break;
-                }
-                executor.sendMsgToAll(data);
-                break;
-            default:
-                executor.sendMsgToOne("No identifier in command protocol");
+        if (identifier == '!') {
+            if (command_identifier == '/') {
+                HandleCommand(command);
+                return;
+            }
         }
+        super.HandleMsg(msg);
     }
     private void HandleCommand (String command) {
         switch (command) {

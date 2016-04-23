@@ -57,7 +57,7 @@ public class Connection extends Thread {
                 sendMsgToOne("Set base protocol OK.\n" + "Choose name (10 characters max).");
                 break;
             case "extended":
-                protocol = new ExtendedProtocol();
+                protocol = new CommandProtocol(new BaseProtocol(this));
                 handler.setProtocol(protocol, this);
                 sendMsgToOne("Set extended protocol OK.\n" + "Choose name (10 characters max).");
                 break;
