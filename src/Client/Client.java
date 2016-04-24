@@ -4,6 +4,7 @@ import GUI.Message;
 import GUI.MessageBox;
 import MessageProtocol.IProtocol;
 import Server.Response;
+import Server.UserType;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -77,9 +78,10 @@ private Parent CreateContent () {
         }
     }
     private Message parceMsg(Response msg) {
-            String name = msg.getName(); // 004
-            String data = msg.getData();
-            return new Message(name + ":", data);
+        String name = msg.getName(); // 004
+        String data = msg.getData();
+        UserType type = msg.getType();
+        return new Message(name + ":", data, type);
     }
 
     private Message parceMsg(String rawData) {
@@ -87,10 +89,10 @@ private Parent CreateContent () {
             String[] parts = rawData.split(":");
             String name = parts[0]; // 004
             String data = rawData.substring(name.length() + 1, rawData.length());
-            return new Message(name + ":", data);
+            return new Message(name + ":", data, UserType.System);
         } else
         {
-            return new Message("System: ", rawData);
+            return new Message("System: ", rawData, UserType.System);
         }
     }
     public static void main (String [] args) {

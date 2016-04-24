@@ -91,9 +91,12 @@ public class Connection extends Thread implements IObserver{
         }
     }
     public void sendMsgToOne (String msg) {
-        DB.sendToOne(this, new Response("System", msg));
+        DB.sendToOne(this, new Response("System", msg, UserType.System));
     }
     public void sendMsgToAll (String msg) {
-        DB.sendToAll(new Response(_name, msg));
+        if (protocol instanceof BaseProtocol)
+            DB.sendToAll(new Response(_name, msg, UserType.Base));
+        else
+            DB.sendToAll(new Response(_name, msg, UserType.Extended));
     }
 }

@@ -1,6 +1,4 @@
 package MessageProtocol.Command;
-
-
 import Server.Connection;
 
 public class HelpCommand extends Command{
