@@ -1,9 +1,16 @@
 package MessageProtocol;
 
+import MessageProtocol.Command.Command;
+import MessageProtocol.Command.HelpCommand;
+import MessageProtocol.Command.NowCommand;
+import MessageProtocol.Command.RulesCommand;
+
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class CommandProtocol extends DecoratorProtocol {
+    Command rulescmd = new RulesCommand(null);
+    Command nowcmd = new NowCommand(rulescmd);
+    Command helpcmd = new HelpCommand(nowcmd);
 
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
@@ -29,17 +36,7 @@ public class CommandProtocol extends DecoratorProtocol {
         super.HandleMsg(msg);
     }
     private void HandleCommand (String command) {
-        switch (command) {
-            case "now":
-                executor.sendMsgToOne(sdf.format(new Date()));
-                break;
-            case "rul":
-                executor.sendMsgToOne(rules);
-                break;
-            default:
-                executor.sendMsgToOne("No command to handle");
-                break;
-        }
+        helpcmd.HandleCommand(executor, command);
     }
     final String rules = "No flood, caps or abusive behaviour allowed. Feel free :)";
 }
