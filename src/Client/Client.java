@@ -2,6 +2,8 @@ package Client;
 
 import GUI.Message;
 import GUI.MessageBox;
+import GUI.SystemMessageBuilder;
+import GUI.UserMessageBuilder;
 import MessageProtocol.IProtocol;
 import Server.Response;
 import Server.UserType;
@@ -29,10 +31,18 @@ public class Client extends Application {
 
     public MessageBox messages;
 
+    private SystemMessageBuilder systemBuilder;
+    private UserMessageBuilder userBuilder;
+
     TextField input = new TextField();
 
 private Parent CreateContent () {
     messages = new MessageBox();
+
+
+    systemBuilder = new SystemMessageBuilder();
+    userBuilder = new UserMessageBuilder();
+
 
     messages.addMessage(parceMsg("Choose a protocol."));
 
@@ -78,22 +88,18 @@ private Parent CreateContent () {
         }
     }
     private Message parceMsg(Response msg) {
-        String name = msg.getName(); // 004
-        String data = msg.getData();
-        UserType type = msg.getType();
-        return new Message(name + ":", data, type);
+        userBuilder.CreateMessage();
+        userBuilder.SetType(msg.getType());
+        userBuilder.SetName(msg.getName());
+        userBuilder.SetData(msg.getData());
+        return userBuilder.GetMessage();
     }
-
     private Message parceMsg(String rawData) {
-        if (rawData.contains(":")) {
-            String[] parts = rawData.split(":");
-            String name = parts[0]; // 004
-            String data = rawData.substring(name.length() + 1, rawData.length());
-            return new Message(name + ":", data, UserType.System);
-        } else
-        {
-            return new Message("System: ", rawData, UserType.System);
-        }
+        systemBuilder.CreateMessage();
+        systemBuilder.SetType(UserType.System);
+        systemBuilder.SetName("System");
+        systemBuilder.SetData(rawData);
+        return systemBuilder.GetMessage();
     }
     public static void main (String [] args) {
         launch(args);

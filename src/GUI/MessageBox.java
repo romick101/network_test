@@ -41,6 +41,6 @@ public class MessageBox {
        // root.getChildren().add(s1);
     }
     public void addMessage (Message in) {
-        Messages.getChildren().add(in.getMessage());
+        Messages.getChildren().add(in.getContainer());
     }
 }
