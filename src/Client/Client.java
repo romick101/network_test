@@ -1,9 +1,6 @@
 package Client;
 
-import GUI.Message;
-import GUI.MessageBox;
-import GUI.SystemMessageBuilder;
-import GUI.UserMessageBuilder;
+import GUI.*;
 import MessageProtocol.IProtocol;
 import Server.Response;
 import Server.UserType;
@@ -29,7 +26,7 @@ public class Client extends Application {
     Listener _listener;
     Socket _socket;
 
-    public MessageBox messages;
+    public ProxyMessageBox messages;
 
     private SystemMessageBuilder systemBuilder;
     private UserMessageBuilder userBuilder;
@@ -37,9 +34,7 @@ public class Client extends Application {
     TextField input = new TextField();
 
 private Parent CreateContent () {
-    messages = new MessageBox();
-
-
+    messages = new ProxyMessageBox();
     systemBuilder = new SystemMessageBuilder();
     userBuilder = new UserMessageBuilder();
 

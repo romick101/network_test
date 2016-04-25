@@ -7,6 +7,7 @@ import javafx.scene.text.Text;
 public class UserMessageBuilder extends MessageBuilder{
     @Override
     public void SetName(String inName) {
+        message.setName(inName);
         Text username = new Text();
         username.setWrappingWidth(_NAMESIZE);
         username.setText(inName);
@@ -20,6 +21,7 @@ public class UserMessageBuilder extends MessageBuilder{
     }
     @Override
     public void SetData(String inData) {
+        message.setData(inData);
         Text data = new Text();
         data.setWrappingWidth(_DATASIZE);
         data.setText(inData);

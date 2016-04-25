@@ -7,6 +7,7 @@ import javafx.scene.text.Text;
 public class SystemMessageBuilder extends MessageBuilder {
     @Override
     public void SetName(String inName) {
+        message.setName(inName);
         Text username = new Text();
         username.setWrappingWidth(_NAMESIZE);
         username.setText(inName);
@@ -15,11 +16,13 @@ public class SystemMessageBuilder extends MessageBuilder {
     }
     @Override
     public void SetData(String inData) {
+        message.setData(inData);
         Text data = new Text();
         data.setWrappingWidth(_DATASIZE);
         data.setText(inData);
         data.setFill(Color.AQUA);
         message.getContainer().getChildren().add(data);
+
     }
     @Override
     public void SetType(UserType type) {
