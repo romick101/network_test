@@ -14,7 +14,6 @@ public abstract class IMessageContainer {
         return root;
     }
     public IMessageContainer() {
-        System.out.println("Запахал абстрактный конструктор");
         Messages = new VBox();
         Messages.setPrefSize(300,500);
         Messages.setStyle("-fx-background-color: black;");

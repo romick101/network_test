@@ -3,7 +3,6 @@ package Client;
 import GUI.*;
 import MessageProtocol.IProtocol;
 import Server.Response;
-import Server.UserType;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -28,18 +27,19 @@ public class Client extends Application {
 
     public ProxyMessageBox messages;
 
-    private SystemMessageBuilder systemBuilder;
-    private UserMessageBuilder userBuilder;
+//    private SystemMessageBuilder systemBuilder;
+//    private UserMessageBuilder userBuilder;
+    BuilderDirector builder = new BuilderDirector();
 
     TextField input = new TextField();
 
 private Parent CreateContent () {
     messages = new ProxyMessageBox();
-    systemBuilder = new SystemMessageBuilder();
-    userBuilder = new UserMessageBuilder();
+//    systemBuilder = new SystemMessageBuilder();
+//    userBuilder = new UserMessageBuilder();
 
 
-    messages.addMessage(parceMsg("Choose a protocol."));
+    messages.addMessage(parceMsg("Choose аccount type (base or extended)."));
 
     input.setOnAction(event -> {
         _writer.writeMsg(input.getText());
@@ -83,19 +83,18 @@ private Parent CreateContent () {
         }
     }
     private Message parceMsg(Response msg) {
-        userBuilder.CreateMessage();
-        userBuilder.SetType(msg.getType());
-        userBuilder.SetName(msg.getName());
-        userBuilder.SetData(msg.getData());
-        return userBuilder.GetMessage();
+        return builder.build(msg,new UserMessageBuilder());
     }
-    private Message parceMsg(String rawData) {
-        systemBuilder.CreateMessage();
-        systemBuilder.SetType(UserType.System);
-        systemBuilder.SetName("System");
-        systemBuilder.SetData(rawData);
-        return systemBuilder.GetMessage();
+        private Message parceMsg(String rawData) {
+        return builder.build(new Response("System",rawData), new SystemMessageBuilder());
     }
+//    private Message parceMsg(String rawData) {
+//        systemBuilder.CreateMessage();
+//        systemBuilder.SetType(UserType.System);
+//        systemBuilder.SetName("System");
+//        systemBuilder.SetData(rawData);
+//        return systemBuilder.GetMessage();
+//    }
     public static void main (String [] args) {
         launch(args);
     }
